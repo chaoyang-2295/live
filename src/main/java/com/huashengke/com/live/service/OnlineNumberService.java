@@ -46,7 +46,7 @@ public class OnlineNumberService {
             number = chatRoomData.getOnlineusercount();
             int maxOnlineNumber = liveRoom.getMaxOnlineNumber();
             if (maxOnlineNumber >= 0 && number > maxOnlineNumber)
-                liveDao.changeMaxOnlineNumber(liveRoom.getId(), liveRoom.getLive(liveRoom.getCurrentLiveId()).getId(), number);
+                liveDao.changeMaxOnlineNumber(liveRoom.getId(), liveRoom.getCurrentLive().getId(), number);
         }else {
             number = 0;
         }

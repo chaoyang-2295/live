@@ -35,12 +35,22 @@ public class LiveController {
     @ApiOperation("创建直播")
     @RequestMapping(value = "/createLive", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> createLiveChapter(@RequestBody LiveBody liveBody) {
+    public Result<?> createLive(@RequestBody LiveBody liveBody) {
         try {
             liveService.createLive(liveBody);
             return Result.ok();
         } catch (LiveException e) {
             return Result.error(e.getRc(), e.getMessage());
+        }
+    }
+    @RequestMapping(value="/startLive", method = RequestMethod.PUT)
+    @ResponseBody
+    public Result<?> startLive(@RequestParam String liveRoomId){
+        try {
+            liveService.startLive(liveRoomId);
+            return Result.ok();
+        } catch (LiveException e) {
+            return  Result.error(e.getRc(), e.getMessage());
         }
     }
 
@@ -84,12 +94,12 @@ public class LiveController {
     }*/
 
 
-    @ApiOperation("修改直播信息")
-    @RequestMapping(value = "/changeLive", method = RequestMethod.POST)
+    @ApiOperation("修改直播间信息")
+    @RequestMapping(value = "/changeLiveRoom", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> changeLive(@RequestBody LiveChangeBody liveChangeBody) {
+    public Result<?> changeLive(@RequestBody LiveRoomChangeBody body) {
         try {
-            liveService.changeLive(liveChangeBody);
+            liveService.changeLiveRoom(body);
             return Result.ok();
         } catch (Exception e) {
             return Result.error(-1, e.getMessage());
@@ -100,7 +110,7 @@ public class LiveController {
     @RequestMapping(value = "/changeLiveStatus", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> changeLiveStatus(@RequestParam("liveId") String liveId,
-                                        @RequestParam("status") LiveRoomStatus status) {
+                                        @RequestParam("status") LiveStatus status) {
         try {
             liveService.changeLiveStatus(liveId, status);
             return Result.ok();
@@ -110,7 +120,7 @@ public class LiveController {
     }
 
 
-    @ApiOperation("转码配置,转码模版，目前有标准质量模板：lld、lsd、lhd、lud，高品质（窄带高清转码）模板：ld、sd、hd、ud之间用&连接")
+   /* @ApiOperation("转码配置,转码模版，目前有标准质量模板：lld、lsd、lhd、lud，高品质（窄带高清转码）模板：ld、sd、hd、ud之间用&连接")
     @RequestMapping(value = "/transCoderConfig", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> transCoderConfig(@RequestParam("definition") String definition,
@@ -121,7 +131,7 @@ public class LiveController {
         } catch (Exception e) {
             return Result.error(-1, e.getMessage());
         }
-    }
+    }*/
 
 
     @ApiOperation("开始视频录制")

@@ -105,6 +105,7 @@ public class AliLiveRequestService {
     }
 
     public void deleteLiveMixConfig(String app) throws LiveException{
+
         DeleteLiveMixConfigRequest deleteRequest = new DeleteLiveMixConfigRequest();
         deleteRequest.setDomainName(client.getDomain());
         deleteRequest.setAppName(app);
@@ -112,11 +113,11 @@ public class AliLiveRequestService {
     }
 
     public void addLiveStreamTranscode(String appName, String definition) throws LiveException {
+
         AddLiveStreamTranscodeRequest request = new AddLiveStreamTranscodeRequest();
-        request.setDomain(client.getDomain());
         request.setApp(appName);
         request.setTemplate(definition);
-
+        request.setDomain(client.getDomain());
         try {
             client.sendRequest(request);
         }catch (LiveException e){

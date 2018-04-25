@@ -76,6 +76,11 @@ public class NewLiveDao{
         liveMapper.changeLive(live);
     }
 
+    public void changeLiveRoom(LiveRoomChangeBody body){
+
+
+    }
+
     public void changeDefinition( String liveId, String definition) throws LiveException {
         liveMapper.changeDefinition(liveId,definition);
     }
@@ -90,7 +95,7 @@ public class NewLiveDao{
 
     public void changeLiveStatus(Live live, LiveStatus liveStatus) throws LiveException {
         liveMapper.changeLiveStatus(live.getId(), liveStatus.name());
-        liveMapper.
+        //修改直播流状态
     }
 
     

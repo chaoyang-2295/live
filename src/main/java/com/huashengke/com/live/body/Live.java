@@ -40,6 +40,11 @@ public class Live {
     private int maxOnlineNumber;
 
     /**
+     * 是否开始录制
+     */
+    private boolean isRecord;
+
+    /**
      * 直播中的流
      */
     private ArrayList<LiveStream> liveStreams;
@@ -48,6 +53,7 @@ public class Live {
 
     public Live(String id, LiveBody liveBody) {
         this.id = id;
+        this.isRecord = false;
         this.title = liveBody.getTitle();
         this.status = LiveStatus.NOT_START;
         this.content = liveBody.getContent();
@@ -60,6 +66,10 @@ public class Live {
 
     public String getId() {
         return id;
+    }
+
+    public boolean isRecord() {
+        return isRecord;
     }
 
     public String getTitle() {
@@ -105,6 +115,7 @@ public class Live {
                 ", liveRoomId='" + liveRoomId + '\'' +
                 ", status=" + status +
                 ", maxOnlineNumber=" + maxOnlineNumber +
+                ", isRecord=" + isRecord +
                 ", liveStreams=" + liveStreams +
                 '}';
     }

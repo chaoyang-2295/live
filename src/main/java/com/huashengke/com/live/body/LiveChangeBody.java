@@ -1,14 +1,14 @@
 package com.huashengke.com.live.body;
 
-import java.util.Date;
 
 public class LiveChangeBody{
     /**
      * 直播id
      */
     private String liveId;
+
     /**
-     * 主播简介
+     * 主播簡介
      */
     private String userIntro;
 
@@ -18,14 +18,14 @@ public class LiveChangeBody{
     private String title;
 
     /**
+     * 直播内容
+     */
+    private String content;
+
+    /**
      * 直播公告
      */
     private String liveNotice;
-
-    /**
-     * 直播时间介绍
-     */
-    private Date startTime;
 
     /**
      * web封面
@@ -36,11 +36,11 @@ public class LiveChangeBody{
     public LiveChangeBody() {
     }
 
-    public LiveChangeBody(String title, String liveNotice, Date startTime,String userIntro,String webCover, String liveId) {
+    public LiveChangeBody(String title, String liveNotice, String content,String userIntro,String webCover, String liveId) {
         this.title = title;
         this.liveNotice = liveNotice;
-        this.startTime = startTime;
         this.userIntro = userIntro;
+        this.content = content;
         this.webCover = webCover;
         this.liveId = liveId;
     }
@@ -61,11 +61,11 @@ public class LiveChangeBody{
         return liveId;
     }
 
-    public Date getStartTime() {
-        return startTime;
-    }
-
     public String getUserIntro() {
         return userIntro;
+    }
+
+    public String getContent() {
+        return content;
     }
 }

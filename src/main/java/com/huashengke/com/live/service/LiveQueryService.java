@@ -86,11 +86,11 @@ public class LiveQueryService extends QueryUtil {
 
     public LivePlayBody getLivePlayBody(String liveId, String userId, MediaType mediaType) throws LiveException {
         LiveRoom liveRoom = liveCache.getShowLive(liveId);
-        Live live = liveRoom.getLive(liveRoom.getCurrentLiveId());
-        String url = aliLiveRequestService.getUrl(live.getAppName(), live.getLiveStream());
+        Live live = liveRoom.getCurrentLive();
+        String url = aliLiveRequestService.getUrl(live.getAppName(), live.getStreamName());
         int onlineNumber = onlineNumberService.getOnlineNumber(liveRoom);
         String maxDefinition = liveRoom.getDefinitions().get(liveRoom.getDefinitions().size()-1).getType();
-        return new LivePlayBody(liveRoom,new LiveContentBody(liveRoom,userId),onlineNumber,url,aliLiveRequestService.getLiveAuthenticationKey(live.getAppName(), live.getLiveStream(),mediaType,maxDefinition));
+        return new LivePlayBody(liveRoom,new LiveContentBody(liveRoom,userId),onlineNumber,url,aliLiveRequestService.getLiveAuthenticationKey(live.getAppName(), live.getStreamName(),mediaType,maxDefinition));
     }
 
     public NIMUser getNimUserInfo(String userId) {
@@ -99,10 +99,10 @@ public class LiveQueryService extends QueryUtil {
 
     public LiveStatusData getLiveStatusData(String liveId, MediaType mediaType, Definition definition) throws LiveException {
         LiveRoom liveRoom = liveCache.get(liveId);
-        Live live = liveRoom.getLive(liveRoom.getCurrentLiveId());
+        Live live = liveRoom.getCurrentLive();
         int onlineNumber = onlineNumberService.getOnlineNumber(liveRoom);
-        String url = aliLiveRequestService.getUrl(live.getAppName(), live.getLiveStream());
-        return new LiveStatusData(url, liveRoom,onlineNumber,aliLiveRequestService.getLiveAuthenticationKey(live.getAppName(), live.getLiveStream(),mediaType,
+        String url = aliLiveRequestService.getUrl(live.getAppName(), live.getStreamName());
+        return new LiveStatusData(url, liveRoom,onlineNumber,aliLiveRequestService.getLiveAuthenticationKey(live.getAppName(), live.getStreamName(),mediaType,
                 definition==null? liveRoom.getDefinitions().get(liveRoom.getDefinitions().size()-1).getType():definition.name()));
     }
 

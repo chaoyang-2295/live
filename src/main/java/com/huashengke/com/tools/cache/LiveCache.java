@@ -57,7 +57,7 @@ public class LiveCache implements HuaShengKeCache {
      */
     public LiveRoom getShowLive(String liveId) throws LiveException {
         LiveRoom liveRoom = get(liveId);
-        if (StringUtil.isStringEmpty(liveRoom.getCurrentLiveId()) && !liveRoom.getStatus().equals(LiveRoomStatus.CLOSE)) {
+        if (StringUtil.isStringEmpty(liveRoom.getCurrentLive().getId()) && !liveRoom.getStatus().equals(LiveRoomStatus.CLOSE)) {
             throw new LiveException("直播不存在", LiveErrorRc.NoSuchLiveError);
         }
         return liveRoom;
