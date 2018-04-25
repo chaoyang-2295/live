@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link href="http://vjs.zencdn.net/5.19/video-js.min.css" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="../css/liveRoom.css">
+        <script src="http://vjs.zencdn.net/5.19/video.min.js"></script>
+    </head>
+    <script type="text/javascript" src="../js/video.js"></script>
+    <body>
+        <div id = "wrapper">
+            <div id = "header">
+                <p align="middle">我是直播室头</p>
+            </div>
+            <div id = "body">
+                <div id = "live">
+                    <video id="my-player" class="video-js" style="width:100%; height:100%; object-fit: fill" controls preload="auto" poster="//vjs.zencdn.net/v/oceans.png" data-setup='{}'>
+                        <source src='rtmp://live.hkstv.hk.lxdns.com/live/hks' type='rtmp/flv'/>
+                        </p>
+                    </video>
+                </div>
+                <div id = "chat">
+                    <p>我是聊天室</p>
+                </div>
+            </div>
+
+            <div id = "footer">
+                <p>我是直播间底部</p>
+            </div>
+        </div>
+    </body>
+</html>

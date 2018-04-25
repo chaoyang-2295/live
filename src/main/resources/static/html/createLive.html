@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建直播间</title>
+</head>
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+    $().ready(function () {
+
+    });
+    function submit() {
+
+        var form = $(".f").;
+        form.submit();
+    }
+</script>
+<body>
+    <div>
+        <div align="center">
+
+            <form class = "f" enctype="application/x-www-form-urlencoded"  method="post" action="/createLive" >
+                <table border="1">
+                    <caption><h2>创建直播室</h2></caption>
+                    <tr>
+                        <td width="30%"><label>主播ID</label></td>
+                        <td width="70%"><input type="text" size="30"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>主播介绍</label></td>
+                        <td><input type="text" size="30" /></td>
+                    </tr>
+                    <tr>
+                        <td><label>直播标题</label></td>
+                        <td><input type="text" size="30"/></td>
+                    </tr>
+             <!--       <tr>
+                        <td><label>开播时间</label></td>
+                        <td><input type="datetime-local" /></td>
+                    </tr>-->
+                    <tr>
+                        <td><label>直播码率</label></td>
+                        <td><input type="text" size="30"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>App名称</label></td>
+                        <td><input type="text" size="30"/></td>
+                    </tr>
+                    <tr>
+                        <td><label>流 名 称</label></td>
+                        <td><input type="text" size="30" /></td>
+                    </tr>
+              <!--      <tr>
+                        <td><label>Web封面</label></td>
+                        <td><input type="file" /></td>
+                    </tr>-->
+                    <tr>
+                        <td><label>直播公告</label></td>
+                        <td><textarea rows="3" cols="30"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="button" value="提交" onclick="submit()"/>
+                            <input type="button" value="重置" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
