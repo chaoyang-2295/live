@@ -20,6 +20,7 @@ public class JedisService {
      * @return            回调函数的返回值
      */
     public <T> T doJedisOperation(JedisKeyAction<T> jedisAction, JedisBusiness business, String... args){
+
         String key = JedisKeyBuilder.keyBuilder(business,args);
         try(Jedis jedis = JedisPoolConfig.buildPool().getResource()) {
             return jedisAction.doAction(jedis, key);

@@ -5,7 +5,9 @@ package com.huashengke.com.tools.exception.user;
  */
 public enum UserErrorRc {
 
-    NoSuchUserError(1000);
+    NoSuchUserError(1000),
+
+    TelephoneHasBound(1001);
 
     /**
      * 异常返回码

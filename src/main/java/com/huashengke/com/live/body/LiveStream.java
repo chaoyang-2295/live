@@ -14,7 +14,7 @@ public class LiveStream {
     private boolean isForbid;
     /**是否显示*/
     private boolean isShow;
-    /**是否拉流*/
+    /**是否推流*/
     private boolean isPush;
     /**是否是主流*/
     private boolean isMain;

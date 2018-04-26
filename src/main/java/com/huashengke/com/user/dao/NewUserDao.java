@@ -1,6 +1,5 @@
 package com.huashengke.com.user.dao;
 
-import com.huashengke.com.live.body.UserInfo;
 import com.huashengke.com.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

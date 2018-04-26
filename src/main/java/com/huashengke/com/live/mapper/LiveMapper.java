@@ -11,26 +11,41 @@ import java.util.Date;
 @Mapper
 @Component
 public interface LiveMapper {
-    @Select("select * from live_info where live_id = #{live_room_id}")
-    LiveRoom getLive(@Param("live_room_id") String liveRoomId);
 
-    @Insert("insert into tbl_vw_live" +
-            "  (id, app, title, cover, stream, 'status', chat_room_id, live_time, user_id," +
-            "  user_intro, live_notice, chapter_id, online_number, definition, is_push, is_record_open, is_record)" +
-            "  VALUES(#{id}, #{app}, #{title}, #{cover}, #{stream}, #{status}, #{chatRoomId}, #{startTime}, #{userId}, #{userIntro}," +
-            "  #{liveNotice}, #{chapterId}, #{onLineNumber}, #{definition}, #{isPush}, #{isRecordOpen}, #{isRecord})")
-    void addLiveRoom(@Param("id") String liveRoomId, @Param("title")String title, @Param("cover")String cover,
-                    @Param("status")String status, @Param("chatRoomId")String chatRoomId,
-                     @Param("userId")String userId, @Param("userIntro")String userIntro, @Param("liveNotice")String liveNotice,
-                     @Param("definition")String definition);
+    @Select("select * from tbl_vw_live_room where id = #{liveRoomId}")
+    LiveRoom getLiveRoom(@Param("liveRoomId") String liveRoomId);
 
-    @Insert("insert into live_stream(stream , description, live_id, is_push, is_forbid, is_show, is_main, is_forbid)" +
-            "values(#{liveStreamId},#{appName},#{streamName},#{description},#{isPush},#{isForbid},#{isShow},#{isMain})")
-    void addLiveStream(@Param("streamName")String streamName, @Param("description")String description,
-                       @Param("liveId")String liveId, @Param("isPush")int isPush, @Param("isForbid")int isForbid,
-                       @Param("isShow")int isShow, @Param("isMain")int isMain);
+    @Select("select * from tbl_vw_live where id = #{liveId}")
+    Live getLive(@Param("liveId") String liveId);
 
 
+
+    @Insert("insert into tbl_vw_live_room(id, title, chat_room_id, user_id, live_notice, definition) VALUES (#{id},#{title},#{chatRoomId},#{userId},#{liveNotice},#{definition})")
+    void addLiveRoom(LiveRoom liveRoom);
+
+    @Insert("insert into tbl_vw_live(id, app_name, stream_name, live_room_id, live_status) values(#{id,},#{appName},#{streamName},#{liveRoomId},#{liveStatus})")
+    void addLive(Live live);
+
+    @Insert("insert into live_stream(stream , description, live_id, is_push, is_main)" +
+            "values(#{streamName}, #{description}, #{liveId}, #{isMain})")
+    void addLiveStream(@Param("streamName")String streamName, @Param("description")String description, @Param("liveId")String liveId, @Param("isPush")int isPush, @Param("isMain")int isMain);
+
+    @Update("update tbl_vw_live_room set title = #{title}, live_notice = #{liveNotice} where id = #{id}")
+    void updateLiveRoom(LiveRoom liveRoom);
+
+    @Update("update tbl_vw_live_room set current_live_id = #{liveId} where id = #{liveRoomId}")
+    void addLiveToLiveRoom(@Param("liveId") String liveId, @Param("liveRoomId") String liveRoomId);
+
+    @Update("update tbl_vw_live_stream set is_push = #{isPush} where live_id = #{liveId} and stream_name = #{streamName}")
+    void updateLiveStreamStatus(@Param("liveId") String liveId, @Param("streamName") String streamName, @Param("isPush") int isPush);
+
+
+
+
+
+
+
+    //=======================================================================================================
     @Insert("insert into tbl_vw_live_stream (stream, description, live_id) VALUES (#{stream}, #{description}, #{liveId})")
     void addNewStream(@Param("stream") String stream, @Param("description") String description, @Param("liveId") String liveId);
 

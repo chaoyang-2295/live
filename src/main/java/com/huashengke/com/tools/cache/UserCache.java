@@ -1,6 +1,5 @@
 package com.huashengke.com.tools.cache;
 
-import com.huashengke.com.live.body.UserInfo;
 import com.huashengke.com.tools.ObjectSerializer;
 import com.huashengke.com.tools.redis.JedisBusiness;
 import com.huashengke.com.tools.redis.JedisService;
@@ -72,6 +71,6 @@ public class UserCache implements HuaShengKeCache {
     @Override
     public void refresh(String id) {
         jedisService.doJedisOperation( (jedis,key)->jedis.del(key),
-                JedisBusiness.Live,id);
+                JedisBusiness.LiveRoom,id);
     }
 }

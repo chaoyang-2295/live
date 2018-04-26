@@ -17,15 +17,46 @@ public class NewLiveDao{
 
     @Autowired
     protected NewLiveDao() {}
-    public LiveRoom getLive(String liveRoomId){
 
-        return  liveMapper.getLive( liveRoomId );
+    public LiveRoom getLiveRoom(String liveRoomId){
+
+        return liveMapper.getLiveRoom(liveRoomId);
     }
 
-    
+    public Live getLive(String liveId){
+
+        return  liveMapper.getLive( liveId );
+    }
+
+    public void addLiveRoom(LiveRoom liveRoom) throws LiveException {
+
+        liveMapper.addLiveRoom(liveRoom);
+    }
+
+    public void addLive(Live live){
+
+        liveMapper.addLive(live);
+        //将直播添加到直播间
+        liveMapper.addLiveToLiveRoom(live.getId(), live.getLiveRoomId());
+        liveMapper.addLiveStream(live.getStreamName(), "MainStream", live.getId(), 0, 1);
+    }
+
     public void addNewStream( String liveId, String stream, String description){
+
         liveMapper.addNewStream(stream,description,liveId);
     }
+
+    public void changeLiveStreamStatus(String liveId, String streamName, LiveStreamStatus status){
+
+        liveMapper.updateLiveStreamStatus(liveId, streamName, status.getVal());
+    }
+
+
+
+
+
+
+
 
     public void changeStreamDescription( String liveId, String stream, String description) throws LiveException {
         liveMapper.changeStreamDescription(stream,description,liveId);
@@ -54,23 +85,8 @@ public class NewLiveDao{
         liveMapper.changeLiveStream(newStream,liveId);
     }
 
-    public void changeLiveStreamStatus(String liveId, LiveStreamStatus streamName){
 
-    }
 
-    public void addLiveRoom(LiveRoom liveRoom) throws LiveException {
-
-        //插入直播房间信息
-        liveMapper.addLiveRoom(liveRoom.getId(), liveRoom.getTitle(), liveRoom.getCover(), liveRoom.getStatus().name(),
-                liveRoom.getChatRoomId(), liveRoom.getUserId(), liveRoom.getUserIntro(), liveRoom.getLiveNotice(),
-                liveRoom.getDefinition());
-    }
-
-    public void addLive(Live live){
-
-//        liveMapper.addLiveRecord();
-
-    }
 
     public void changeLive( LiveChangeBody live) throws LiveException {
         liveMapper.changeLive(live);
@@ -95,7 +111,6 @@ public class NewLiveDao{
 
     public void changeLiveStatus(Live live, LiveStatus liveStatus) throws LiveException {
         liveMapper.changeLiveStatus(live.getId(), liveStatus.name());
-        //修改直播流状态
     }
 
     

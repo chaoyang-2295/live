@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -242,20 +244,27 @@ public class AliLiveRequestService {
         return failureTime+"-0-0-"+encryptUrlkey;
     }
 
-    public String getLivePushAuthenticationKey(String app, String stream){
-        long failureTime = System.currentTimeMillis();
-        StringBuilder sb = new StringBuilder();
-        sb.append("/").append(app)
-                .append("/")
-                .append(stream)
-                .append("-")
-                .append(failureTime)
-                .append("-0-0-")
-                .append(getPrivateKey());
-        String encryptUrlkey = Md5Util.makeMd5Sum(sb.toString().getBytes());
-        return failureTime+"-0-0-"+encryptUrlkey;
-    }
+    public String generateAuthKey(String appName, String streanName){
 
+        String authKey = null;
+        long outDate = new Date().getTime() / 1000 + 60 * 30;
+
+        StringBuilder str = new StringBuilder();
+        str.append("/")
+                .append(appName)
+                .append("/")
+                .append(streanName)
+                .append("-")
+                .append(outDate)
+                .append("-0-0-")
+                .append(client.getPrivateKey());
+
+        String md5Hash = Md5Util.makeMd5Sum(str.toString().getBytes());
+
+
+        return outDate + "-0-0-" + md5Hash;
+
+    }
 
     public String getCourseCreator(){
         return client.getCourseCreator();

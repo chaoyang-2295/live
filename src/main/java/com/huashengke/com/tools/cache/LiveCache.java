@@ -1,6 +1,7 @@
 package com.huashengke.com.tools.cache;
 
 
+import com.huashengke.com.live.body.Live;
 import com.huashengke.com.live.body.LiveRoom;
 import com.huashengke.com.live.body.LiveRoomStatus;
 import com.huashengke.com.live.dao.NewLiveDao;
@@ -29,21 +30,22 @@ public class LiveCache implements HuaShengKeCache {
     }
 
     /**
-     * 通过直播id获取直播
-     * @param liveId  直播id
+     * 通过直播间获取直播间信息
+     * @param liveRoomId  直播id
      * @return        直播对象
      * @throws Exception
      */
-    public LiveRoom get(String liveId) throws LiveException {
+    public LiveRoom get(String liveRoomId) throws LiveException {
+
         LiveRoom liveRoom = jedisService.doJedisOperation((jedis, key) -> {
             String liveStr = jedis.get(key);
             return ObjectSerializer.instance().deserialize(liveStr,
                     LiveRoom.class);
-        }, JedisBusiness.Live, liveId);
+        }, JedisBusiness.LiveRoom, liveRoomId);
         if (liveRoom == null) {
-            liveRoom = resetLive(liveId);
+            liveRoom = resetLiveRoom(liveRoomId);
             if (liveRoom == null) {
-                throw new NoSuchLiveException("直播不存在", LiveErrorRc.NoSuchLiveError);
+                throw new NoSuchLiveException("直播间不存在", LiveErrorRc.NoSuchLiveRoom);
             }
         }
         return liveRoom;
@@ -64,13 +66,15 @@ public class LiveCache implements HuaShengKeCache {
     }
 
     /**
-     * 重置直播对象
+     * 重新获取直播间
      * @param
      * @return
      */
-    public LiveRoom resetLive(String liveRoomId) {
+    public LiveRoom resetLiveRoom(String liveRoomId) {
 
-        LiveRoom liveRoom = liveDao.getLive(liveRoomId);
+        LiveRoom liveRoom = liveDao.getLiveRoom(liveRoomId);
+        Live live = liveDao.getLive(liveRoom.getCurrentLiveId());
+        liveRoom.init(live);
         if (liveRoom == null) {
             return null;
         }
@@ -79,7 +83,7 @@ public class LiveCache implements HuaShengKeCache {
             pipeline.set(key, ObjectSerializer.instance().serialize(liveRoom));
             pipeline.expire(key,60*30);
             return pipeline.syncAndReturnAll();
-        }, JedisBusiness.Live, liveRoomId);
+        }, JedisBusiness.LiveRoom, liveRoomId);
         return liveRoom;
     }
 
@@ -91,6 +95,6 @@ public class LiveCache implements HuaShengKeCache {
     @Override
     public void refresh(String id) {
         jedisService.doJedisOperation( (jedis,key)->jedis.del(key),
-                JedisBusiness.Live,id);
+                JedisBusiness.LiveRoom,id);
     }
 }

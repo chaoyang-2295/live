@@ -17,6 +17,17 @@ public class Result<T> {
         return error(rc, null, null);
     }
 
+    public static Result<String>error(Throwable e){
+        return error(-1, null, e);
+    }
+
+    public static Result<String>error(String msg){
+        return error(-1,msg,null);
+    }
+    public static Result<String> error(String msg, int rc){
+        return error(rc, msg, null);
+    }
+
     public static Result<String> error(int rc, String msg) {
         return error(rc, msg, null);
     }

@@ -26,7 +26,6 @@ public class CountCache {
 
     /**
      * 返回自生成的id
-     * @return
      */
     public String getId(){
         return  idCountType.getJoinString()+ idCountType.getDefaultNumber() + incValue();
@@ -49,7 +48,6 @@ public class CountCache {
 
     /**
      * 根据传入的种子，在redis中初始化id
-     * @param seed
      */
     private void checkInitializeSeed(long seed) {
         jedisService.doJedisOperation( (jedis, key1) -> {

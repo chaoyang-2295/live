@@ -1,7 +1,9 @@
 package com.huashengke.com.live.body;
 
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 
 public class Live {
@@ -11,19 +13,11 @@ public class Live {
      */
     private String id;
     /**
-     *直播标题
-     */
-    private String title;
-    /**
-     *直播内容
-     */
-    private String content;
-    /**
      *AppName
      */
     private String appName;
     /**
-     *StreamName
+     *主流
      */
     private String streamName;
     /**
@@ -33,7 +27,7 @@ public class Live {
     /**
      *直播状态
      */
-    private LiveStatus status;
+    private LiveStatus liveStatus;
     /**
      *在线人数
      */
@@ -54,9 +48,7 @@ public class Live {
     public Live(String id, LiveBody liveBody) {
         this.id = id;
         this.isRecord = false;
-        this.title = liveBody.getTitle();
-        this.status = LiveStatus.NOT_START;
-        this.content = liveBody.getContent();
+        this.liveStatus = LiveStatus.NOT_START;
         this.appName = liveBody.getAppName();
         this.streamName = liveBody.getStreamName();
         this.liveRoomId = liveBody.getLiveRoomId();
@@ -64,20 +56,18 @@ public class Live {
         this.maxOnlineNumber = 0;
     }
 
+    public void addLiveStream(LiveStream stream){
+        if(liveStreams.contains(stream)){
+            return;
+        }
+        liveStreams.add(stream);
+    }
     public String getId() {
         return id;
     }
 
     public boolean isRecord() {
         return isRecord;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
     }
 
     public String getAppName() {
@@ -92,8 +82,8 @@ public class Live {
         return liveRoomId;
     }
 
-    public LiveStatus getStatus() {
-        return status;
+    public LiveStatus getLiveStatus() {
+        return liveStatus;
     }
 
     public int getMaxOnlineNumber() {
@@ -104,16 +94,18 @@ public class Live {
         return liveStreams;
     }
 
+
+
+
+
     @Override
     public String toString() {
         return "Live{" +
                 "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
                 ", appName='" + appName + '\'' +
                 ", streamName='" + streamName + '\'' +
                 ", liveRoomId='" + liveRoomId + '\'' +
-                ", status=" + status +
+                ", liveStatus=" + liveStatus +
                 ", maxOnlineNumber=" + maxOnlineNumber +
                 ", isRecord=" + isRecord +
                 ", liveStreams=" + liveStreams +

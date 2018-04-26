@@ -3,7 +3,9 @@ package com.huashengke.com.live.controller;
 import com.huashengke.com.live.body.*;
 import com.huashengke.com.live.service.LiveService;
 import com.huashengke.com.tools.Result;
+import com.huashengke.com.tools.exception.HuaShengKeException;
 import com.huashengke.com.tools.exception.live.LiveException;
+import com.huashengke.com.tools.exception.user.UserException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +17,6 @@ public class LiveController {
 
     @Autowired
     private LiveService liveService;
-//    @Autowired
-//    private LiveMixService liveMixService;
 
 
     @ResponseBody
@@ -24,10 +24,11 @@ public class LiveController {
     @RequestMapping(value = "/createLiveRoom", method = RequestMethod.POST)
     public Result<?> createLive(@RequestBody LiveRoomCreateBody liveData) {
         try {
-            liveService.createLiveRoom( liveData );
-            return Result.ok();
+
+            LiveRoom liveRoom = liveService.createLiveRoom( liveData );
+            return Result.result(liveRoom);
         } catch (Exception e) {
-            return Result.error( -1 );
+            return Result.error(e.getMessage());
         }
     }
 
@@ -37,61 +38,37 @@ public class LiveController {
     @ResponseBody
     public Result<?> createLive(@RequestBody LiveBody liveBody) {
         try {
-            liveService.createLive(liveBody);
-            return Result.ok();
+
+            Live live = liveService.createLive(liveBody);
+            return Result.result(live);
         } catch (LiveException e) {
             return Result.error(e.getRc(), e.getMessage());
         }
     }
+
+    @ApiOperation("开始直播,进行直播流的推送")
     @RequestMapping(value="/startLive", method = RequestMethod.PUT)
     @ResponseBody
     public Result<?> startLive(@RequestParam String liveRoomId){
         try {
-            liveService.startLive(liveRoomId);
-            return Result.ok();
+
+            return Result.result(liveService.startLive(liveRoomId));
         } catch (LiveException e) {
             return  Result.error(e.getRc(), e.getMessage());
         }
     }
 
-    /*@ResponseBody
-    @ApiOperation("修改直播章节")
-    @RequestMapping(value = "/changeLiveChapter", method = RequestMethod.POST)
-    public Result<?> changeLiveChapter(@RequestBody LiveChapterChangeBody changeBody) {
+    @ApiOperation("开始直播,进行直播流的推送")
+    @RequestMapping(value="/stopLive", method = RequestMethod.PUT)
+    @ResponseBody
+    public Result<?> stopLive(@RequestParam String liveRoomId){
         try {
-            liveService.changeLiveChapter(changeBody);
+            liveService.stopLive(liveRoomId);
             return Result.ok();
         } catch (LiveException e) {
-            return Result.error(e.getRc(), e.getMessage());
+            return  Result.error(e.getRc(), e.getMessage());
         }
     }
-
-    @ResponseBody
-    @ApiOperation("删除直播章节")
-    @RequestMapping(value = "/deleteChapter",method = RequestMethod.POST)
-    public Result<?> deleteChapter(@RequestParam("chapterId")String chapterId,
-                                   @RequestParam("liveId")String liveId){
-        try {
-            liveService.deleteChapter(chapterId,liveId);
-            return Result.ok();
-        } catch (LiveException e) {
-            return Result.error(e.getRc(),e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @ApiOperation("修改视频源")
-    @RequestMapping(value = "/changeChapterVideo", method = RequestMethod.POST)
-    public Result<?> changeChapterVideo(@RequestParam("liveId") String liveId,
-                                        @RequestParam("chapterId") String chapterId,
-                                        @RequestParam("videoId") String videoId) {
-        try {
-            liveService.changeChapterVideo(liveId, chapterId, videoId);
-            return Result.ok();
-        } catch (LiveException e) {
-            return Result.error(e.getRc(), e.getMessage());
-        }
-    }*/
 
 
     @ApiOperation("修改直播间信息")
@@ -109,10 +86,10 @@ public class LiveController {
     @ApiOperation("修改直播状态")
     @RequestMapping(value = "/changeLiveStatus", method = RequestMethod.POST)
     @ResponseBody
-    public Result<?> changeLiveStatus(@RequestParam("liveId") String liveId,
+    public Result<?> changeLiveStatus(@RequestParam("liveRoomId") String liveRoomId,
                                         @RequestParam("status") LiveStatus status) {
         try {
-            liveService.changeLiveStatus(liveId, status);
+            liveService.changeLiveStatus(liveRoomId, status);
             return Result.ok();
         } catch (Exception e) {
             return Result.error(-1, e.getMessage());
@@ -151,7 +128,6 @@ public class LiveController {
     /**
      * 停止录制
      * @param liveId 直播间id
-     * @return
      */
     @ApiOperation("停止视频录制")
     @RequestMapping(value = "/stopRecord", method = RequestMethod.POST)
@@ -165,13 +141,27 @@ public class LiveController {
         }
     }
 
+    @ApiOperation("添加新的流")
+    @RequestMapping(value = "/addNewStream", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<?> addNewStream(@RequestParam("liveId") String liveRoomId,
+                                  @RequestParam("streamName") String streamName,
+                                  @RequestParam("description") String description) {
+        try {
+           liveService.addNewStream(liveRoomId, streamName, description);
+            return Result.ok();
+        } catch (Exception e) {
+            return Result.error(-1, e.getMessage());
+        }
+    }
+
     @ApiOperation("开始直播流推送")
     @RequestMapping(value = "/showStream", method = RequestMethod.POST)
     @ResponseBody
     public Result<?> showStream(@RequestParam("liveId") String liveId,
                                 @RequestParam("streamName") String streamName) {
         try {
-//            liveMixService.showStream(liveId, streamName);
+            liveService.pushStream(liveId, streamName);
             return Result.ok();
         } catch (Exception e) {
             return Result.error(-1, e.getMessage());
@@ -232,19 +222,7 @@ public class LiveController {
     }
 
 
-    @ApiOperation("添加新的流")
-    @RequestMapping(value = "/addNewStream", method = RequestMethod.POST)
-    @ResponseBody
-    public Result<?> addNewStream(@RequestParam("liveId") String liveId,
-                                  @RequestParam("streamName") String streamName,
-                                  @RequestParam("description") String description) {
-        try {
-//            liveMixService.addNewStream(liveId, streamName, description);
-            return Result.ok();
-        } catch (Exception e) {
-            return Result.error(-1, e.getMessage());
-        }
-    }
+
 
 
     @ApiOperation("修改流描述")

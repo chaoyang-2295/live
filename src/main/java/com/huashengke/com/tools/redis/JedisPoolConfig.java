@@ -21,12 +21,12 @@ public class JedisPoolConfig {
      */
     public static JedisPool buildPool(){
         if(jedisPool==null) {
-            jedisPool = build("redis.database");
+            jedisPool = build();
         }
         return jedisPool;
     }
 
-    private static JedisPool build(String database){
+    private static JedisPool build(){
 
         InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream( "jedis.properties" );
         Properties countProperties = new Properties();
@@ -45,6 +45,6 @@ public class JedisPoolConfig {
             e.printStackTrace();
         }
         return new JedisPool(poolConfig, countProperties.getProperty("redis.host"), Integer.parseInt(countProperties.getProperty("redis.port")),
-                Integer.parseInt(countProperties.getProperty("redis.timeout")), countProperties.getProperty("redis.password"), Integer.parseInt(countProperties.getProperty(database)));
+                Integer.parseInt(countProperties.getProperty("redis.timeout")), countProperties.getProperty("redis.password"), Integer.parseInt(countProperties.getProperty("redis.database")));
     }
 }

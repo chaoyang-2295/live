@@ -13,10 +13,6 @@ public enum  JedisModule {
      */
     C,
     /**
-     * 消息模块
-     */
-    M,
-    /**
      * 直播模块
      */
     L

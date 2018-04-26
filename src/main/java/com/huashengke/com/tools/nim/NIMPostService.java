@@ -3,15 +3,23 @@ package com.huashengke.com.tools.nim;
 import com.huashengke.com.tools.ObjectSerializer;
 import com.huashengke.com.tools.PropertiesUtil;
 import com.huashengke.com.tools.UUIDUtil;
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
+import org.apache.http.*;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Properties;
 
@@ -20,59 +28,77 @@ public class NIMPostService {
 
     private String appKey;
     private String appSecret;
-    private HttpClientUtil httpClientUtil;
+
+    private static final Logger logger = LoggerFactory.getLogger(NIMService.class);
 
     public NIMPostService(){
         Properties properties = PropertiesUtil.getProperties("nim.properties");
         this.appKey = properties.getProperty("nimAppKey");
         this.appSecret = properties.getProperty("nimAppSecret");
-        httpClientUtil = new HttpClientUtil();
     }
 
     /**
      *  向网易云服务器发送请求
-     * @param url  请求路径
+     * @param url     请求路径
      * @param params  请求参数
      * @param cls     返回类型class对象
      * @param <T>
      * @return
      */
-    public <T> T postNIMServer(String url, List<NameValuePair> params, Class<T> cls) {
-        String rst = postNIMServer(url.trim(), params);
+     <T> T postNIMServer(String url, List<NameValuePair> params, Class<T> cls) {
 
-        //将返回的结果反序列化为对象
-        return ObjectSerializer.instance().deserialize(rst, cls);
-    }
+        String curTime;
+        String checksum;
+        String result = null;
+        String nonce = UUIDUtil.getUUID();
+        HttpPost httpPost = new HttpPost(url);
 
-    public String postNIMServer(String url, List<NameValuePair> params) {
-        //UTF-8编码,解决中文问题
-        HttpEntity entity;
-
+        CloseableHttpResponse response;
+        CloseableHttpClient httpClient;
         try {
-            entity = new UrlEncodedFormEntity(params, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+
+            httpClient = HttpClients.createDefault();
+            curTime = String.valueOf(System.currentTimeMillis() / 1000);
+            checksum = EncodeUtil.getCheckSum(appSecret,nonce, curTime);
+            //============================AddHeader=================================
+            httpPost.addHeader("AppKey", appKey);
+            httpPost.addHeader("Nonce", nonce);
+            httpPost.addHeader("CurTime", curTime);
+            httpPost.addHeader("CheckSum", checksum);
+            httpPost.addHeader("User-Agent","Netease/0.1");
+            httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+            //设置参数
+            httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
+
+            response = httpClient.execute(httpPost);
+            result =  fetchData(response);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return postNIMServer(url, entity);
+        return ObjectSerializer.instance().deserialize(result, cls);
     }
 
-    public String postNIMServer(String url, final HttpEntity entity) {
-        HttpPost post = httpClientUtil.createPost(url, entity, null);
 
-        // addHeader
-        HttpClientUtil.addHeader(post, "AppKey", appKey);
-        String nonce = UUIDUtil.getUUID();
-        String curTime = String.valueOf(System.currentTimeMillis() / 1000);
-        HttpClientUtil.addHeader(post, "Nonce", nonce);
-        HttpClientUtil.addHeader(post, "CurTime", curTime);
-        String checksum = EncodeUtil.getCheckSum(appSecret,nonce, curTime);
-        HttpClientUtil.addHeader(post, "CheckSum", checksum);
+     String fetchData(HttpResponse response) throws IOException {
 
-        // logger
-        //logger.info("Nonce {} | CurlTime {} | CheckSum {}", new Object[]{nonce, curTime, checksum});
+        String result = null;
+        long watch = System.nanoTime();
 
-        return httpClientUtil.fetchData(post);
+            HttpEntity rsEntity = response.getEntity();
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                Charset charset = ContentType.getOrDefault(rsEntity).getCharset();
+                if (charset != null && charset.name().equals("ISO-8859-1")) {
+                    result = EntityUtils.toString(rsEntity);
+                    //转码为UTF-8
+                    result = new String(result.getBytes(charset), "utf-8");
+                } else {
+                    result = EntityUtils.toString(rsEntity, "utf-8");
+                }
+            } else {
+                logger.error("fetch request return error status: code:{" + response.getStatusLine().getStatusCode() + "}");
+            }
+        return result;
     }
 
     public boolean checkRequest(HttpServletRequest request) {
@@ -109,5 +135,4 @@ public class NIMPostService {
         } else
             return null;
     }
-
 }

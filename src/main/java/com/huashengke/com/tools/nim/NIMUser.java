@@ -8,6 +8,7 @@ public class NIMUser {
 
     private String accid;
     private String token;
+    private String nimAppKey;
 
     public int getAutoId() {
         return autoId;
@@ -55,5 +56,21 @@ public class NIMUser {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getNimAppKey() {
+        return nimAppKey;
+    }
+
+    public void setNimAppKey(String nimAppKey) {
+        this.nimAppKey = nimAppKey;
     }
 }

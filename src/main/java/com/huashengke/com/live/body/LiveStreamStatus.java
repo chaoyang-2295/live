@@ -21,4 +21,7 @@ public enum LiveStreamStatus {
         this.val = val;
     }
 
+    public int getVal() {
+        return val;
+    }
 }

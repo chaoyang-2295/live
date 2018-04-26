@@ -14,9 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-/**
- * Created by chentz on 2017/6/20.
- */
+
 public class AliClient {
 
     private SimpleDateFormat format;

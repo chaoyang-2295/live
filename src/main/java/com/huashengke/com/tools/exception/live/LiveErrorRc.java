@@ -19,7 +19,9 @@ public enum LiveErrorRc {
 
     AliyunRequstError(2006),
 
-    NoSuchLiveRoom(2007);
+    NoSuchLiveRoom(2007),
+
+    LiveStreamAlreadyExistError(2008);
 
     /**
      * 异常返回码

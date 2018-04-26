@@ -37,11 +37,12 @@ public enum  JedisBusiness {
     /**
      * 用来保存直播缓存
      */
-    Live(JedisModule.L,"L"),
+    LiveRoom(JedisModule.L,"L"),
 
     LiveOnlineNumber(JedisModule.L,"NUM");
 
     private JedisModule jedisModule;
+
     private String shortName;
 
     public String getShortName() {

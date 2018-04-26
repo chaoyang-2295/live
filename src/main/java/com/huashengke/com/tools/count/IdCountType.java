@@ -6,7 +6,7 @@ package com.huashengke.com.tools.count;
 public enum  IdCountType {
 
     live(100000,"live"),
-    caster(100000,"castere"),
+    caster(100000,"caster"),
     stream(100000,"stream"),
     liveRoom(100000,"liveRoom");
 

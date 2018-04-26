@@ -1,9 +1,6 @@
 package com.huashengke.com.live.body;
 
-import com.huashengke.com.tools.exception.live.LiveErrorRc;
-import com.huashengke.com.tools.exception.live.LiveException;
 
-import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,13 +39,14 @@ public class LiveRoom {
     private Live currentLive;
 
     /**
+     * 当前直播ID
+     */
+    private String currentLiveId;
+
+    /**
      * 聊天室id
      */
     private String chatRoomId;
-    /**
-     * web封面
-     */
-    private String cover;
     /**
      * 转码文字描述
      */
@@ -75,7 +73,6 @@ public class LiveRoom {
     public void changeBaseInfo(LiveRoomCreateBody liveRoomCreateBody) {
         this.title = liveRoomCreateBody.getLiveTitle();
         this.userId = liveRoomCreateBody.getUserId();
-        this.cover = liveRoomCreateBody.getCover();
         this.userIntro = liveRoomCreateBody.getUserIntro();
         this.liveNotice = liveRoomCreateBody.getLiveNotice();
     }
@@ -88,6 +85,10 @@ public class LiveRoom {
                     collect(Collectors.toList());
         }
         return new ArrayList<>();
+    }
+
+    public void init(Live live){
+        this.currentLive = live;
     }
 
     public String getChatRoomId() {
@@ -126,10 +127,6 @@ public class LiveRoom {
         return status;
     }
 
-    public String getCover() {
-        return cover;
-    }
-
     public String getDefinition() {
         return definition;
     }
@@ -138,18 +135,25 @@ public class LiveRoom {
         return currentLive;
     }
 
+    public String getCurrentLiveId() {
+        return currentLiveId;
+    }
+
+
     @Override
     public String toString() {
-        return "Live{" +
+        return "LiveRoom{" +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", userId='" + userId + '\'' +
                 ", userIntro='" + userIntro + '\'' +
                 ", liveNotice='" + liveNotice + '\'' +
                 ", status=" + status +
-                ", chatRoomId=" + chatRoomId +
-                ", cover='" + cover + '\'' +
+                ", currentLive=" + currentLive +
+                ", currentLiveId='" + currentLiveId + '\'' +
+                ", chatRoomId='" + chatRoomId + '\'' +
                 ", definition='" + definition + '\'' +
+                ", definitions=" + definitions +
                 '}';
     }
 }

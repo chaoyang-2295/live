@@ -5,5 +5,5 @@ package com.huashengke.com.tools.cache;
  */
 public interface HuaShengKeCache {
 
-    public void refresh(String id);
+    void refresh(String id);
 }

@@ -15,6 +15,7 @@ public class JedisKeyBuilder {
      * @return         key
      */
     public static String keyBuilder(JedisBusiness business,String... args){
+
         StringBuilder sb = new StringBuilder(business.getJedisModule().name());
         sb.append(SEPERATOR).append(business.getShortName());
         for (int i = 0; i < args.length; i++) {
