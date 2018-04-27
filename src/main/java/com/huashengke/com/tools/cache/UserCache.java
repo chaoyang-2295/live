@@ -3,7 +3,8 @@ package com.huashengke.com.tools.cache;
 import com.huashengke.com.tools.ObjectSerializer;
 import com.huashengke.com.tools.redis.JedisBusiness;
 import com.huashengke.com.tools.redis.JedisService;
-import com.huashengke.com.user.dao.NewUserDao;
+import com.huashengke.com.user.body.UserDetail;
+import com.huashengke.com.user.mapper.UserQueryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Pipeline;
@@ -12,8 +13,9 @@ import redis.clients.jedis.Pipeline;
 public class UserCache implements HuaShengKeCache {
 
     private JedisService jedisService;
+
     @Autowired
-    private NewUserDao userDao;
+    private UserQueryMapper queryMapper;
 
     public UserCache() {
         this.jedisService = new JedisService();
@@ -21,16 +23,14 @@ public class UserCache implements HuaShengKeCache {
 
     /**
      * 通过用户id从缓存中获取用戶信息
-     * @param userId
-     * @return
      */
-    public UserInfo get(String userId) throws Exception {
-        UserInfo userInfo = jedisService.doJedisOperation((jedis, key) -> {
+    public UserDetail get(String userId) throws Exception {
+        UserDetail userInfo = jedisService.doJedisOperation((jedis, key) -> {
             //获取用户信息对象
             String userInfoStr = jedis.get(key);
             //将该对象反序列换返回
             return ObjectSerializer.instance().deserialize(userInfoStr,
-                    UserInfo.class);
+                    UserDetail.class);
         }, JedisBusiness.User, userId);
         if (userInfo == null) {
             //重置缓存中的该用户的数据
@@ -45,23 +45,23 @@ public class UserCache implements HuaShengKeCache {
     /**
      * 重置缓存中用户的信息
      */
-    private UserInfo resetUser(String userId) {
+    private UserDetail resetUser(String userId) {
         //获取用户信息
-        UserInfo userInfo = userDao.getUserInfo( userId );
-        if (userInfo == null) {
+        UserDetail userDetail = queryMapper.getUserDetail(userId);
+        if (userDetail == null) {
             return null;
         }
         //将用户信息保存到缓存中
         jedisService.doJedisOperationAsyn((jedis, key) -> {
                     Pipeline pipeline = jedis.pipelined();
                     //将userInfo序列化保存到缓存内存中
-                    pipeline.set(key, ObjectSerializer.instance().serialize(userInfo));
+                    pipeline.set(key, ObjectSerializer.instance().serialize(userDetail));
                     //设置过期时间
                     pipeline.expire(key,60*30);
                     return pipeline.syncAndReturnAll();
                 },
                 JedisBusiness.User, userId);
-        return userInfo;
+        return userDetail;
     }
 
     /**

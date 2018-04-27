@@ -19,17 +19,17 @@ public class AliClientConfig {
     @Bean
     public AliClient getAliClient() {
         IClientProfile profile = DefaultProfile.getProfile(
-                env.getProperty("live.endpoint"),
+                env.getProperty( "live.endpoint" ),
                 env.getProperty("live.accessKeyId"),
                 env.getProperty("live.secretAccessKey"));
 
         return new AliClient(
-                new DefaultAcsClient(profile),
-                env.getProperty("live.domain"),
-                env.getProperty("live.privateKey"),
-                env.getProperty("live.courseCreator"),
-                env.getProperty("live.bucket"),
-                env.getProperty("live.videoEndPoint"),
-                env.getProperty("live.videoName"));
+                                new DefaultAcsClient(profile),
+                                env.getProperty("live.domain"),
+                                env.getProperty("live.privateKey"),
+                                env.getProperty("live.courseCreator"),
+                                env.getProperty("live.bucket"),
+                                env.getProperty("live.videoEndPoint"),
+                                env.getProperty("live.videoName"));
     }
 }

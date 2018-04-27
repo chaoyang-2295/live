@@ -13,7 +13,6 @@ public class UserDetail {
     private Sex sex;
     private String userId;
     private String telephone;
-    private String username;
     private String nickname;
     private Date birthday;
     private String avatar;
@@ -27,8 +26,18 @@ public class UserDetail {
     private boolean isConfirmEmail;
     private boolean isSilence;
 
-    public UserDetail(UserRegisterBody body){
+    public UserDetail(){}
 
+    public UserDetail(String userId, String telephone, String email, UserRegisterBody body){
+
+        this.userId = userId;
+        this.isSilence = false;
+        this.isConfirmEmail = false;
+        this.email = email;
+        this.telephone = telephone;
+        this.nickname = body.getNickname();
+        this.wechatOpenid = body.getWeChatOpenId();
+        this.qqOpenid = body.getQqOpenId();
     }
 
 
@@ -46,10 +55,6 @@ public class UserDetail {
 
     public String getTelephone() {
         return telephone;
-    }
-
-    public String getUsername() {
-        return username;
     }
 
     public String getNickname() {

@@ -1,5 +1,6 @@
 package com.huashengke.com.live.body;
 
+import com.google.gson.Gson;
 import io.swagger.annotations.ApiModel;
 
 import java.util.Date;
@@ -27,6 +28,17 @@ public class LiveBody {
      *直播间编号
      */
     private String liveRoomId;
+
+    public static void main(String[] args){
+
+        LiveBody body = new LiveBody( "liveTitle", "content", "appName", "stream01", "liveRoom1000006" );
+
+        Gson gson = new Gson();
+        System.out.println( gson.toJson( body ) );
+    }
+
+
+
     public LiveBody() {
     }
 

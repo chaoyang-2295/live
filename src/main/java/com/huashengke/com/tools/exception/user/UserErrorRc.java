@@ -5,9 +5,15 @@ package com.huashengke.com.tools.exception.user;
  */
 public enum UserErrorRc {
 
-    NoSuchUserError(1000),
+    NullError(1000),
 
-    TelephoneHasBound(1001);
+    NoSuchUserError(1001),
+
+    TelephoneHasBound(1002),
+
+    AccountAlreadyExist(1003),
+
+    PasswordError(1004);
 
     /**
      * 异常返回码

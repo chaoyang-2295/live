@@ -1,6 +1,9 @@
 package com.huashengke.com.user.dao;
 
+import com.huashengke.com.user.body.UserDetail;
+import com.huashengke.com.user.body.UserInfo;
 import com.huashengke.com.user.mapper.UserMapper;
+import com.huashengke.com.user.mapper.UserQueryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +17,14 @@ public class NewUserDao {
     @Autowired
     private UserMapper userMapper;
 
-    public UserInfo getUserInfo(String userInfo ){
+    @Autowired
+    private UserQueryMapper queryMapper;
 
-        return userMapper.getUserInfo( userInfo );
+    public UserDetail getUserInfo(String userInfo ){
+
+        return queryMapper.getUserDetail(userInfo);
     }
 
-    public void logLogin( String userId){
-        Timestamp nowDate = new Timestamp(System.currentTimeMillis());
-        userMapper.loginLogInsert(userId,nowDate);
-    }
-
-    
     public String changeUserName( String userId, String userName){
         userMapper.changeUserName(userId, userName);
         return userId;
@@ -56,74 +56,8 @@ public class NewUserDao {
     public String registerUser(UserInfo userInfo) throws Exception {
 
         Timestamp nowDate = new Timestamp(System.currentTimeMillis());
-        userMapper.insertUserInfo(userInfo.getUserId(),userInfo.getUsername(),userInfo.getPassword(),userInfo.getEmail(),userInfo.getTelephone(),userInfo.getSex().name(),nowDate);
+      //  userMapper.insertUserInfo(userInfo.getUserId(),userInfo.getUsername(),userInfo.getPassword(),userInfo.getEmail(),userInfo.getTelephone(),userInfo.getSex().name(),nowDate);
         return null;
-    }
-
-    
-    public String changeUserDescription(String description,int archiverScore, String userId){
-
-        userMapper.changeDescription( userId,description,archiverScore );
-        return userId;
-    }
-    
-    public String addUserDescription(String expertDescription, String userId){
-
-        userMapper.addExpertDescription(userId,expertDescription);
-        return userId;
-    }
-
-
-    public  String followUser( String userId, String followedUserId, boolean isFollow){
-
-        Timestamp nowDate = new Timestamp(System.currentTimeMillis());
-        userMapper.updateUserAttentionCount( userId ,1);
-        userMapper.updateUserFansCount( followedUserId,1 );
-        if( isFollow )
-            userMapper.insertUserFollowByUserInfo(userId,followedUserId,nowDate );
-        else
-            userMapper.deleteUserFollowByUserInfo(userId,followedUserId );
-        return userId;
-    }
-
-    public String followUsers( String userId, List<String> followedUserIds, boolean isFollow){
-        Timestamp nowDate = new Timestamp(System.currentTimeMillis());
-        if( isFollow){
-            userMapper.updateUserAttentionCount(userId,followedUserIds.size()  );
-            for(int i = 0; i < followedUserIds.size() ;i++){
-                userMapper.insertUserFollowByUserInfo( userId,followedUserIds.get(i),nowDate );
-                userMapper.updateUserFansCount( followedUserIds.get( i ),1 );
-            }
-        }else{
-//            userMapper.deleteUserFollowByUserInGivenUser(userId, com.netflix.discovery.util.StringUtil.join( followedUserIds.toArray( new String[followedUserIds.size() ] ) ) );
-            userMapper.updateUserAttentionCount(userId,-followedUserIds.size());
-            for (int i= 0;i < followedUserIds.size();i++){
-
-                userMapper.updateUserFansCount(followedUserIds.get( i ),-1);
-            }
-        }
-        return userId;
-    }
-
-    
-    public String defriend( String userId, String friendUserId){
-        Timestamp nowDate = new Timestamp(System.currentTimeMillis());
-        userMapper.defriend(userId,friendUserId,nowDate);
-        return userId;
-    }
-
-    
-    public String unfriend( String userId, String friendUserId){
-
-        userMapper.unfriend(userId,friendUserId);
-        return userId;
-    }
-
-    
-    public String setManager( String userId, boolean isManager){
-
-        userMapper.setManager(userId,isManager ? 1:0 );
-        return userId;
     }
 
     
@@ -145,10 +79,9 @@ public class NewUserDao {
         return userId;
     }
 
-    
     public String changeUserStatus( String userId, String status){
 
-        userMapper.changeUserStatus(userId,status );
+      //  userMapper.changeUserStatus(userId,status );
         return userId;
     }
 

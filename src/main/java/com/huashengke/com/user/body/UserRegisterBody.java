@@ -10,6 +10,9 @@ public class UserRegisterBody {
     @ApiModelProperty(value = "手机号码")
     private String telephone;
 
+    @ApiModelProperty(value = "用户注册时填写的账号")
+    private String username;
+
     @ApiModelProperty(value = "密码")
     private String password;
 
@@ -35,6 +38,10 @@ public class UserRegisterBody {
 
     public String getTelephone() {
         return telephone;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {

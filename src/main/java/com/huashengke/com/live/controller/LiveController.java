@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
+@RequestMapping("/live")
 public class LiveController {
 
     @Autowired
@@ -39,8 +40,8 @@ public class LiveController {
     public Result<?> createLive(@RequestBody LiveBody liveBody) {
         try {
 
-            Live live = liveService.createLive(liveBody);
-            return Result.result(live);
+
+            return Result.result(liveService.createLive(liveBody));
         } catch (LiveException e) {
             return Result.error(e.getRc(), e.getMessage());
         }
@@ -51,14 +52,14 @@ public class LiveController {
     @ResponseBody
     public Result<?> startLive(@RequestParam String liveRoomId){
         try {
-
-            return Result.result(liveService.startLive(liveRoomId));
+            liveService.startLive(liveRoomId);
+            return Result.ok();
         } catch (LiveException e) {
             return  Result.error(e.getRc(), e.getMessage());
         }
     }
 
-    @ApiOperation("开始直播,进行直播流的推送")
+    @ApiOperation("停止直播,进行直播流的推送")
     @RequestMapping(value="/stopLive", method = RequestMethod.PUT)
     @ResponseBody
     public Result<?> stopLive(@RequestParam String liveRoomId){

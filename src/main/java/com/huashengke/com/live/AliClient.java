@@ -62,7 +62,7 @@ public class AliClient {
     }
 
     public HttpResponse sendRequest(RpcAcsRequest request) throws LiveException {
-        HttpResponse response = null;
+        HttpResponse response;
         try {
             response = client.doAction(request);
         } catch (ClientException e) {

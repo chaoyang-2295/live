@@ -110,7 +110,7 @@ public class NewLiveDao{
     }
 
     public void changeLiveStatus(Live live, LiveStatus liveStatus) throws LiveException {
-        liveMapper.changeLiveStatus(live.getId(), liveStatus.name());
+        liveMapper.updateLiveStatus(live.getId(), liveStatus.name());
     }
 
     

@@ -8,8 +8,8 @@ import java.util.Date;
 @Component
 public interface UserMapper {
 
-    @Insert("insert into user_info(user_id,username, password, email,telephone,sex,created_on)  VALUES (#{user_id},#{username},#{password},#{email},#{telephone},#{sex},#{created_on})")
-    void insertUserInfo(@Param("user_id") String userId, @Param("password") String password, @Param("email") String email, @Param("telephone") String telephone, @Param("created_on") Date createdOn);
+    @Insert("insert into tbl_vw_user(user_id, password, email, telephone, nickname, created_on)  VALUES (#{user_id}, #{password}, #{email}, #{telephone}, #{nickname}, #{created_on})")
+    void insertUserInfo(@Param("user_id") String userId, @Param("password") String password, @Param("email") String email, @Param("telephone") String telephone, @Param( "nickname" ) String nickname, @Param("created_on") Date createdOn);
 
     @Update("UPDATE tbl_vw_user SET username=#{user_name} WHERE user_id=#{user_id}")
     void changeUserName(@Param("user_id") String userId, @Param("user_name") String userName);

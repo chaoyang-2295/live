@@ -69,8 +69,7 @@ public class LiveRoom {
         this.definitions = getDefinitionsByDefinition("lld_lsd_lhd");
     }
 
-
-    public void changeBaseInfo(LiveRoomCreateBody liveRoomCreateBody) {
+    public void changeBaseInfo( LiveRoomCreateBody liveRoomCreateBody) {
         this.title = liveRoomCreateBody.getLiveTitle();
         this.userId = liveRoomCreateBody.getUserId();
         this.userIntro = liveRoomCreateBody.getUserIntro();
@@ -91,54 +90,115 @@ public class LiveRoom {
         this.currentLive = live;
     }
 
-    public String getChatRoomId() {
-        return chatRoomId;
-    }
-
-    public List<DefinitionShow> getDefinitions() {
-        return definitions;
-    }
-
-    public int getMaxOnlineNumber() {
-      return 0;
-    }
-
     public String getId() {
+
         return id;
     }
 
+    public void setId( String id ) {
+
+        this.id = id;
+    }
+
     public String getTitle() {
+
         return title;
     }
 
+    public void setTitle( String title ) {
+
+        this.title = title;
+    }
+
     public String getUserId() {
+
         return userId;
     }
 
+    public void setUserId( String userId ) {
+
+        this.userId = userId;
+    }
+
     public String getUserIntro() {
+
         return userIntro;
     }
 
+    public void setUserIntro( String userIntro ) {
+
+        this.userIntro = userIntro;
+    }
+
     public String getLiveNotice() {
+
         return liveNotice;
     }
 
+    public void setLiveNotice( String liveNotice ) {
+
+        this.liveNotice = liveNotice;
+    }
+
     public LiveRoomStatus getStatus() {
+
         return status;
     }
 
-    public String getDefinition() {
-        return definition;
+    public void setStatus( LiveRoomStatus status ) {
+
+        this.status = status;
     }
 
     public Live getCurrentLive() {
+
         return currentLive;
     }
 
+    public void setCurrentLive( Live currentLive ) {
+
+        this.currentLive = currentLive;
+    }
+
     public String getCurrentLiveId() {
+
         return currentLiveId;
     }
 
+    public void setCurrentLiveId( String currentLiveId ) {
+
+        this.currentLiveId = currentLiveId;
+    }
+
+    public String getChatRoomId() {
+
+        return chatRoomId;
+    }
+
+    public void setChatRoomId( String chatRoomId ) {
+
+        this.chatRoomId = chatRoomId;
+    }
+
+    public String getDefinition() {
+
+        return definition;
+    }
+
+    public void setDefinition( String definition ) {
+
+        this.definition = definition;
+    }
+
+    public List< DefinitionShow > getDefinitions() {
+
+        return definitions;
+    }
+
+    public void setDefinitions( List< DefinitionShow > definitions ) {
+
+        this.definitions = definitions;
+    }
 
     @Override
     public String toString() {

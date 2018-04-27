@@ -5,6 +5,7 @@ import com.huashengke.com.live.body.Live;
 import com.huashengke.com.live.body.LiveRoom;
 import com.huashengke.com.live.body.LiveRoomStatus;
 import com.huashengke.com.live.dao.NewLiveDao;
+import com.huashengke.com.live.mapper.LiveMapper;
 import com.huashengke.com.tools.ObjectSerializer;
 import com.huashengke.com.tools.StringUtil;
 import com.huashengke.com.tools.exception.live.LiveErrorRc;
@@ -22,7 +23,7 @@ public class LiveCache implements HuaShengKeCache {
     private JedisService jedisService;
 
     @Autowired
-    private NewLiveDao liveDao;
+    private LiveMapper liveMapper;
 
     @Autowired
     public LiveCache() {
@@ -72,8 +73,8 @@ public class LiveCache implements HuaShengKeCache {
      */
     public LiveRoom resetLiveRoom(String liveRoomId) {
 
-        LiveRoom liveRoom = liveDao.getLiveRoom(liveRoomId);
-        Live live = liveDao.getLive(liveRoom.getCurrentLiveId());
+        LiveRoom liveRoom = liveMapper.getLiveRoom(liveRoomId);
+        Live live = liveMapper.getLive(liveRoom.getCurrentLiveId());
         liveRoom.init(live);
         if (liveRoom == null) {
             return null;

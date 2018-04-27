@@ -1,5 +1,7 @@
-package com.huashengke.com.user.body;
+package com.huashengke.com.user.mapper;
 
+import com.huashengke.com.user.body.UserDetail;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -9,8 +11,15 @@ import java.util.Set;
 /**
  * Created by chentz on 2018/1/31.
  */
+@Mapper
 @Component
 public interface UserQueryMapper {
+
+    @Select("select * from tbl_vw_user where user_id=#{user_id}")
+    UserDetail getUserDetail(@Param("user_id") String userId);
+
+    @Select("select * from tbl_vw_user where telephone = #{username} or email = #{username}")
+    UserDetail getUserByTelephoneOrEmail(@Param("username") String username);
 
     @Select("select * from tbl_vw_user where telephone = #{telephone}")
     UserDetail getUserDetailByTelephone(@Param("telephone") String telephone);

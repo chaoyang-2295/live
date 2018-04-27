@@ -1,7 +1,6 @@
 package com.huashengke.com.live.body;
 
 import com.google.gson.Gson;
-import com.huashengke.com.tools.UUIDUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 

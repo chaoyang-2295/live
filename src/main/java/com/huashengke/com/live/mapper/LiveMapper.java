@@ -3,6 +3,7 @@ package com.huashengke.com.live.mapper;
 import com.huashengke.com.live.body.LiveRoom;
 import com.huashengke.com.live.body.LiveChangeBody;
 import com.huashengke.com.live.body.Live;
+import com.huashengke.com.live.body.LiveRoomChangeBody;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +13,12 @@ import java.util.Date;
 @Component
 public interface LiveMapper {
 
-    @Select("select * from tbl_vw_live_room where id = #{liveRoomId}")
-    LiveRoom getLiveRoom(@Param("liveRoomId") String liveRoomId);
 
     @Select("select * from tbl_vw_live where id = #{liveId}")
     Live getLive(@Param("liveId") String liveId);
 
-
+    @Select("select * from tbl_vw_live_room where id = #{liveRoomId}")
+    LiveRoom getLiveRoom(@Param("liveRoomId") String liveRoomId);
 
     @Insert("insert into tbl_vw_live_room(id, title, chat_room_id, user_id, live_notice, definition) VALUES (#{id},#{title},#{chatRoomId},#{userId},#{liveNotice},#{definition})")
     void addLiveRoom(LiveRoom liveRoom);
@@ -26,12 +26,12 @@ public interface LiveMapper {
     @Insert("insert into tbl_vw_live(id, app_name, stream_name, live_room_id, live_status) values(#{id,},#{appName},#{streamName},#{liveRoomId},#{liveStatus})")
     void addLive(Live live);
 
-    @Insert("insert into live_stream(stream , description, live_id, is_push, is_main)" +
-            "values(#{streamName}, #{description}, #{liveId}, #{isMain})")
+    @Insert("insert into tbl_vw_live_stream(stream_name , description, live_id, is_push, is_main)" +
+            "values(#{streamName}, #{description}, #{liveId}, #{isPush}, #{isMain})")
     void addLiveStream(@Param("streamName")String streamName, @Param("description")String description, @Param("liveId")String liveId, @Param("isPush")int isPush, @Param("isMain")int isMain);
 
-    @Update("update tbl_vw_live_room set title = #{title}, live_notice = #{liveNotice} where id = #{id}")
-    void updateLiveRoom(LiveRoom liveRoom);
+    @Update("update tbl_vw_live_room set title = #{liveTitle}, live_notice = #{liveNotice} where id = #{liveRoomId}")
+    void updateLiveRoom(LiveRoomChangeBody liveRoom);
 
     @Update("update tbl_vw_live_room set current_live_id = #{liveId} where id = #{liveRoomId}")
     void addLiveToLiveRoom(@Param("liveId") String liveId, @Param("liveRoomId") String liveRoomId);
@@ -89,8 +89,8 @@ public interface LiveMapper {
     @Update("update tbl_vw_live_room set status = #{status}")
     void changeLiveRoomStatus(@Param("liveRoom") LiveRoom liveRoom, @Param("status") String status);
 
-    @Update("update live_stream set is_push=#{liveStatus} where id=#{liveStreamId}")
-    void changeLiveStatus(@Param("liveStreamId") String liveStreamId, @Param("liveStatus") String liveStatus);
+    @Update("update tbl_vw_live set live_status = #{liveStatus} where id=#{liveId}")
+    void updateLiveStatus(@Param("liveId") String liveId, @Param("liveStatus") String liveStatus);
 
     @Update("update tbl_vw_new_live set is_record_open = #{isRecordOpen} where id=#{liveId}")
     void changeRecordStatus(@Param("liveId") String liveId, @Param("isRecordOpen") int isRecordOpen);

@@ -21,6 +21,7 @@ public class LiveRoomChangeBody {
     @ApiModelProperty("web封面")
     private String cover;
 
+    public LiveRoomChangeBody(){}
 
     public String getLiveRoomId() {
         return liveRoomId;

@@ -2,9 +2,7 @@ package com.huashengke.com.tools.nim;
 
 import com.huashengke.com.tools.ObjectSerializer;
 import com.huashengke.com.tools.PropertiesUtil;
-import com.huashengke.com.tools.UUIDUtil;
 import org.apache.http.*;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -18,10 +16,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 @Service
 public class NIMPostService {
@@ -50,7 +48,7 @@ public class NIMPostService {
         String curTime;
         String checksum;
         String result = null;
-        String nonce = UUIDUtil.getUUID();
+        String nonce = getUUID();
         HttpPost httpPost = new HttpPost(url);
 
         CloseableHttpResponse response;
@@ -134,5 +132,11 @@ public class NIMPostService {
             return body;
         } else
             return null;
+    }
+
+
+    private String getUUID(){
+        String s = UUID.randomUUID().toString();
+        return s.substring(0, 8) + s.substring(9, 13) + s.substring(14, 18) + s.substring(19, 23) + s.substring(24);
     }
 }

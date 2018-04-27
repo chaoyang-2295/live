@@ -28,8 +28,8 @@ public class LiveQueryService extends QueryUtil {
     private AliLiveRequestService aliLiveRequestService;
 
     @Autowired
-    protected LiveQueryService(@Qualifier("dataSource") DataSource aDataSource) {
-        super(aDataSource);
+    protected LiveQueryService(@Qualifier("dataSource") DataSource dataSource) {
+        super(dataSource);
     }
 
     public boolean isExistApp(String app){
